@@ -28,7 +28,7 @@ public class TaskController {
             return new ResponseEntity<>(taskService.createTask(taskDTO), HttpStatus.OK);
         }
         catch (Exception e){
-            return new ResponseEntity<>("Something Went Wrong", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

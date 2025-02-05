@@ -2,34 +2,61 @@
   "workflow": {
     "transitions": [
       {
-        "action": "CREATE",
-        "currentStatus": null,
-        "updatedStatus": "TODO",
-        "allowedRoles": ["Manager"]
+        "State": null,
+        "Status" : null,
+        "actions": [
+          {
+            "action": "CREATE",
+            "nextState": "TODO",
+            "allowedRoles": ["Manager"]
+          }
+        ]
       },
       {
-        "action": "START",
-        "currentStatus": "TODO",
-        "updatedStatus": "IN_PROGRESS",
-        "allowedRoles": ["Employee"]
+        "State": "TODO",
+        "Status" : "IN_WORKFLOW",
+        "actions": [
+          {
+            "action": "START",
+            "nextState": "IN_PROGRESS",
+            "allowedRoles": ["Employee"]
+          }
+        ]
       },
       {
-        "action": "SUBMIT",
-        "currentStatus": "IN_PROGRESS",
-        "updatedStatus": "UNDER_REVIEW",
-        "allowedRoles": ["Employee"]
+        "State": "IN_PROGRESS",
+        "Status" : "IN_WORKFLOW",
+        "actions": [
+          {
+            "action": "SUBMIT",
+            "nextState": "UNDER_REVIEW",
+            "allowedRoles": ["Employee"]
+          }
+        ]
       },
       {
-        "action": "REJECT",
-        "currentStatus": "UNDER_REVIEW",
-        "updatedStatus": "REJECTED",
-        "allowedRoles": ["Manager"]
+        "State": "UNDER_REVIEW",
+        "Status" : "IN_WORKFLOW",
+        "actions": [
+          {
+            "action": "REJECT",
+            "nextState": "REJECTED",
+            "allowedRoles": ["Manager"]
+          },
+          {
+            "action": "APPROVE",
+            "nextState": "COMPLETED",
+            "allowedRoles": ["Manager"]
+          }
+        ]
       },
       {
-        "action": "APPROVE",
-        "currentStatus": "UNDER_REVIEW",
-        "updatedStatus": "COMPLETED",
-        "allowedRoles": ["Manager"]
+        "State" : "REJECTED",
+        "Status" : "IN_ACTIVE"
+      },
+      {
+        "State" : "COMPLETED",
+        "Status" : "ACTIVE"
       }
     ]
   }

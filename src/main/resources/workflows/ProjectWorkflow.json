@@ -1,0 +1,92 @@
+{
+  "workflow": {
+    "transitions": [
+      {
+        "state": null,
+        "status" : null,
+        "actions": [
+          {
+            "action": "CREATE",
+            "nextState": "PLANNING",
+            "allowedRoles": ["ADMIN"]
+          }
+        ]
+      },
+      {
+        "state": "PLANNING",
+        "status" : "IN_WORKFLOW",
+        "actions": [
+          {
+            "action": "START",
+            "nextState": "IN_PROGRESS",
+            "allowedRoles": ["ADMIN"]
+          },
+          {
+            "action": "HOLD",
+            "nextState": "ON_HOLD",
+            "allowedRoles": ["ADMIN"]
+          }
+        ]
+      },
+      {
+        "state": "ON_HOLD",
+        "status" : "IN_WORKFLOW",
+        "actions": [
+          {
+            "action": "RESUME",
+            "nextState": "IN_PROGRESS",
+            "allowedRoles": ["ADMIN"]
+          },
+          {
+            "action": "CANCEL",
+            "nextState": "CANCELLED",
+            "allowedRoles": ["ADMIN"]
+          }
+        ]
+      },
+      {
+        "state": "IN_PROGRESS",
+        "status" : "IN_WORKFLOW",
+        "actions": [
+          {
+            "action": "COMPLETE",
+            "nextState": "COMPLETED",
+            "allowedRoles": ["ADMIN"]
+          },
+          {
+            "action": "CANCEL",
+            "nextState": "CANCELLED",
+            "allowedRoles": ["ADMIN"]
+          },
+          {
+            "action": "HOLD",
+            "nextState": "ON_HOLD",
+            "allowedRoles": ["ADMIN"]
+          }
+        ]
+      },
+      {
+        "state": "COMPLETED",
+        "status" : "ACTIVE",
+        "actions": [
+          {
+            "action": "REOPEN",
+            "nextState": "IN_PROGRESS",
+            "allowedRoles": ["ADMIN"]
+          }
+        ]
+      },
+      {
+        "state": "CANCELLED",
+        "status" : "INACTIVE",
+        "actions": [
+          {
+            "action": "REOPEN",
+            "nextState": "IN_PROGRESS",
+            "allowedRoles": ["ADMIN"]
+          }
+        ]
+      }
+    ]
+  }
+}

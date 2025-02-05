@@ -6,40 +6,32 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WorkflowTransition {
-    private String action;
-    private String currentStatus;
-    private String updatedStatus;
-    private List<String> allowedRoles;
+    private String state;
+    private List<WorkFlowActions> actions;
 
-    public String getAction() {
-        return action;
+    private String status;
+
+    public String getState() {
+        return state;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getCurrentStatus() {
-        return currentStatus;
+    public List<WorkFlowActions> getActions() {
+        return actions;
     }
 
-    public void setCurrentStatus(String currentStatus) {
-        this.currentStatus = currentStatus;
+    public void setActions(List<WorkFlowActions> actions) {
+        this.actions = actions;
     }
 
-    public String getUpdatedStatus() {
-        return updatedStatus;
+    public String getTaskStatus() {
+        return status;
     }
 
-    public void setUpdatedStatus(String updatedStatus) {
-        this.updatedStatus = updatedStatus;
-    }
-
-    public List<String> getAllowedRoles() {
-        return allowedRoles;
-    }
-
-    public void setAllowedRoles(List<String> allowedRoles) {
-        this.allowedRoles = allowedRoles;
+    public void setTaskStatus(String status) {
+        this.status = status;
     }
 }

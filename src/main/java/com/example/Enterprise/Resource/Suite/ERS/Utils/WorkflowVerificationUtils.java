@@ -1,5 +1,6 @@
 package com.example.Enterprise.Resource.Suite.ERS.Utils;
 
+import com.example.Enterprise.Resource.Suite.ERS.WorkflowLoader.WorkFlowActions;
 import com.example.Enterprise.Resource.Suite.ERS.WorkflowLoader.WorkflowLoader;
 import com.example.Enterprise.Resource.Suite.ERS.WorkflowLoader.WorkflowTransition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 @Component
@@ -19,19 +21,25 @@ public class WorkflowVerificationUtils {
      * Validates if the action is allowed based on the current status and action.
      *
      * @param transitions   The list of workflow transitions.
-     * @param currentStatus The current status of the task.
+     * @param currentState The current status of the task.
      * @param action        The action that is being applied.
      * @return The updated status if the action is valid; null if not.
      */
-    public static String getUpdatedStatus(List<WorkflowTransition> transitions, String currentStatus, String action) {
-        Optional<WorkflowTransition> transition = transitions.stream()
-                .filter(t -> (t.getCurrentStatus() == null && currentStatus == null) ||
-                        (t.getCurrentStatus() != null && t.getCurrentStatus().equals(currentStatus)))
-                .filter(t -> t.getAction().equals(action))
-                .findFirst();
-
-        return transition.map(WorkflowTransition::getUpdatedStatus).orElse(null);
+    public static String getNextState(List<WorkflowTransition> transitions, String currentState, String action) {
+        return transitions.stream()
+                .filter(t ->
+                        (currentState == null && t.getState() == null) ||
+                                (t.getState() != null && t.getState().equals(currentState)) ||
+                                ("IN_WORKFLOW".equals(t.getTaskStatus()))
+                )
+                .flatMap(t -> t.getActions() != null ? t.getActions().stream() : Stream.empty())
+                .filter(a -> a.getAction().equals(action))
+                .map(WorkFlowActions::getNextState)
+                .findFirst()
+                .orElse(null);
     }
+
+
 
     /**
      * Verifies if the action is valid for the given task's current status.
@@ -42,7 +50,7 @@ public class WorkflowVerificationUtils {
      * @return true if valid, false otherwise.
      */
     public static boolean isValidAction(List<WorkflowTransition> transitions, String currentStatus, String action) {
-        return getUpdatedStatus(transitions, currentStatus, action) != null;
+        return getNextState(transitions, currentStatus, action) != null;
     }
 
     /**
@@ -59,7 +67,7 @@ public class WorkflowVerificationUtils {
         // Validate if the action is allowed for the current status
         if (isValidAction(transitions, status, action)) {
             // Get the updated status for the task based on the action
-            return getUpdatedStatus(transitions, status, action);
+            return getNextState(transitions, status, action);
         } else {
             throw new IllegalArgumentException("Invalid action for the current status.");
         }
