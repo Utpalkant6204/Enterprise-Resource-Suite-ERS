@@ -1,56 +1,23 @@
-package com.example.Enterprise.Resource.Suite.ERS.Entity;
+package com.example.Enterprise.Resource.Suite.ERS.DTOS;
 
 import com.example.Enterprise.Resource.Suite.ERS.Enums.Role;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "employee")
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeeDTO {
     private Long employeeId;
-
-    @Column(nullable = false)
+    @NotNull
     private String firstName;
-
     private String lastName;
-
-    @Column(nullable = false, unique = true)
+    @NotNull
     private String email;
-
     private String phone;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column(nullable = false)
     private boolean isActive = true;
-
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    public Employee() {
-    }
-
-    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, Department department, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.employeeId = employeeId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.phone = phone;
-        this.isActive = isActive;
-        this.department = department;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    private Long departmentId = null;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Long getEmployeeId() {
         return employeeId;
@@ -108,12 +75,12 @@ public class Employee {
         isActive = active;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
     public LocalDateTime getCreatedAt() {
