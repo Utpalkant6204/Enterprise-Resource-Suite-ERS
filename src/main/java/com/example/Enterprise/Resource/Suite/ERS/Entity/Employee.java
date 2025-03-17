@@ -2,11 +2,13 @@ package com.example.Enterprise.Resource.Suite.ERS.Entity;
 
 import com.example.Enterprise.Resource.Suite.ERS.Enums.Role;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employee")
+@EntityListeners(AuditingEntityListener.class)
 public class Employee {
 
     @Id
@@ -29,17 +31,16 @@ public class Employee {
     @Column(nullable = false)
     private boolean isActive = true;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
+    private String department;
 
+    @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public Employee() {
     }
 
-    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, Department department, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, String department, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -108,14 +109,6 @@ public class Employee {
         isActive = active;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -130,5 +123,24 @@ public class Employee {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

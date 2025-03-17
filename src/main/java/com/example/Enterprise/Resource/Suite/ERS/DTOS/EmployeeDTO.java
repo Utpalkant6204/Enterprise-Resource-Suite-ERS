@@ -1,21 +1,28 @@
 package com.example.Enterprise.Resource.Suite.ERS.DTOS;
 
 import com.example.Enterprise.Resource.Suite.ERS.Enums.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public class EmployeeDTO {
+    @JsonProperty("id")
     private Long employeeId;
     @NotNull
     private String firstName;
     private String lastName;
     @NotNull
     private String email;
+    @JsonProperty("mobileNumber")
     private String phone;
+    @NotNull
     private Role role;
     private boolean isActive = true;
-    private Long departmentId = null;
+
+    @JsonProperty("department")
+    @NotNull
+    private String department;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -75,14 +82,6 @@ public class EmployeeDTO {
         isActive = active;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -97,5 +96,13 @@ public class EmployeeDTO {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }
