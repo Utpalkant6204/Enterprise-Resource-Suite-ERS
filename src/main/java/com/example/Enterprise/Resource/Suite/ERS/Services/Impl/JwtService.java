@@ -19,25 +19,26 @@ import javax.crypto.SecretKey;
 @Service
 public class JwtService {
 
-    private String SECRET_KEY = "";
+    private static String SECRET_KEY = "";
 
-    public void JWTService() {
-
+    static {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGen.generateKey();
             SECRET_KEY = Base64.getEncoder().encodeToString(sk.getEncoded());
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error generating secret key", e);
         }
     }
 
     public String generateToken(String email, List<String> roles) {
         return Jwts.builder()
+                .claims()
+                .add("roles", roles)
                 .subject(email)
-                .claim("roles", roles)
-                .issuedAt(new Date())
+                .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .and()
                 .signWith(getKey())
                 .compact();
     }

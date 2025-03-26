@@ -37,6 +37,11 @@ public class jwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        if (request.getRequestURI().equals("/login")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String requestBody = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
 
         if (requestBody.isEmpty()) {
