@@ -42,15 +42,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 criteriaDTO.setPagination(new PaginationDTO());
             }
 
-//            if(criteriaDTO.getPagination().getPageSize() == Integer.parseInt(null))
-//            {
-//                criteriaDTO.getPagination().setPageSize(10);
-//            }
-//            if(criteriaDTO.getPagination().getPageNumber() == Integer.parseInt(null))
-//            {
-//                criteriaDTO.getPagination().setPageSize(0);
-//            }
-
             List<Employee> employees = employeeRepository.searchEmployee(
                     criteriaDTO.getId(),
                     criteriaDTO.getSearchText(),

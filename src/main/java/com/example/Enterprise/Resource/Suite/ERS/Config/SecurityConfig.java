@@ -43,7 +43,7 @@ public class SecurityConfig {
         return httpSecurity
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/login").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(request -> request.requestMatchers("/login", "/api/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(excep -> excep.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -3,11 +3,12 @@ package com.example.Enterprise.Resource.Suite.ERS.DTOS;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CriteriaDTO {
 
     @JsonProperty("id")
-    private Long id;
+    private UUID id;
 
     @JsonProperty("role")
     private List<String> role;
@@ -21,11 +22,11 @@ public class CriteriaDTO {
     @JsonProperty("pagination")
     private PaginationDTO pagination;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

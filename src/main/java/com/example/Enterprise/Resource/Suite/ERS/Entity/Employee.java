@@ -2,9 +2,12 @@ package com.example.Enterprise.Resource.Suite.ERS.Entity;
 
 import com.example.Enterprise.Resource.Suite.ERS.Enums.Role;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "employee")
@@ -12,8 +15,10 @@ import java.time.LocalDateTime;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employeeId;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
+    @Column(name = "employee_id", updatable = false, nullable = false)
+    private UUID employeeId;
 
     @Column(nullable = false)
     private String firstName;
@@ -42,7 +47,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, String department, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
+    public Employee(UUID employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, String department, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,11 +61,11 @@ public class Employee {
         this.password = password;
     }
 
-    public Long getEmployeeId() {
+    public UUID getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(UUID employeeId) {
         this.employeeId = employeeId;
     }
 

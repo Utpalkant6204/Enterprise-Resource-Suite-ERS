@@ -7,23 +7,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     @Query(value = """
-        SELECT * FROM employee e\s
-        WHERE (:employeeId IS NULL OR e.employee_id = :employeeId)
-        AND (:searchText IS NULL OR CONCAT(e.first_name, ' ', e.last_name) LIKE %:searchText%)
+        SELECT * FROM employee e
+        WHERE (:employeeId IS NULL OR e.employee_id = CAST(:employeeId AS UUID))
+        AND (:searchText IS NULL OR LOWER(CONCAT(e.first_name, ' ', e.last_name)) ILIKE LOWER(CONCAT('%', :searchText, '%')))
         LIMIT :limit OFFSET :offset
     """, nativeQuery = true)
     List<Employee> searchEmployee(
-            @Param("employeeId") Long employeeId,
+            @Param("employeeId") UUID employeeId,
             @Param("searchText") String searchText,
-//            @Param("role") String role,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
+
 
     Employee findByEmail(String username);
 }

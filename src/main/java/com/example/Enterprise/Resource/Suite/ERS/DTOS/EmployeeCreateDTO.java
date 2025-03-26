@@ -6,10 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class EmployeeCreateDTO {
     @JsonProperty("id")
-    private Long employeeId;
+    private UUID employeeId;
     @NotNull
     private String firstName;
     private String lastName;
@@ -30,11 +31,11 @@ public class EmployeeCreateDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Long getEmployeeId() {
+    public UUID getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(UUID employeeId) {
         this.employeeId = employeeId;
     }
 
