@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -111,6 +112,14 @@ public class GlobalExceptionHandler {
         response.put("messages", errors);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Authorization Failed");
+        response.put("message", "Invalid username or password.");
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
     
     @ExceptionHandler(Exception.class)

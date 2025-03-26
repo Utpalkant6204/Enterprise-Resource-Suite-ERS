@@ -1,60 +1,34 @@
-package com.example.Enterprise.Resource.Suite.ERS.Entity;
+package com.example.Enterprise.Resource.Suite.ERS.DTOS;
 
+import com.example.Enterprise.Resource.Suite.ERS.Entity.Employee;
 import com.example.Enterprise.Resource.Suite.ERS.Enums.Role;
-import jakarta.persistence.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "employee")
-@EntityListeners(AuditingEntityListener.class)
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeeCreateDTO {
+    @JsonProperty("id")
     private Long employeeId;
-
-    @Column(nullable = false)
+    @NotNull
     private String firstName;
-
     private String lastName;
-
-    @Column(nullable = false, unique = true)
+    @NotNull
     private String email;
 
+    @NotNull
+    private String password;
+    @JsonProperty("mobileNumber")
     private String phone;
-
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private Role role;
-
-    @Column(nullable = false)
     private boolean isActive = true;
 
+    @JsonProperty("department")
+    @NotNull
     private String department;
-
-    private String password;
-
-    @Column(updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    public Employee() {
-    }
-
-    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, String department, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
-        this.employeeId = employeeId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.phone = phone;
-        this.isActive = isActive;
-        this.department = department;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.password = password;
-    }
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Long getEmployeeId() {
         return employeeId;
@@ -142,17 +116,6 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
     }
 
 }
