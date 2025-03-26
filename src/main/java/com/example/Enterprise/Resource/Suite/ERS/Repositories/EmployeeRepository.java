@@ -13,16 +13,17 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(value = """
         SELECT * FROM employee e\s
-        WHERE (:employeeId IS NULL OR e.id = :employeeId)
+        WHERE (:employeeId IS NULL OR e.employee_id = :employeeId)
         AND (:searchText IS NULL OR CONCAT(e.first_name, ' ', e.last_name) LIKE %:searchText%)
-        AND (:role IS NULL OR e.role IN (:role))
         LIMIT :limit OFFSET :offset
     """, nativeQuery = true)
     List<Employee> searchEmployee(
             @Param("employeeId") Long employeeId,
             @Param("searchText") String searchText,
-            @Param("role") List<String> role,
+//            @Param("role") String role,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
+
+    Employee findByEmail(String username);
 }

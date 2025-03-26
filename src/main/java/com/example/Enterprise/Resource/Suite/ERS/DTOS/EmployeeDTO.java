@@ -14,6 +14,7 @@ public class EmployeeDTO {
     private String lastName;
     @NotNull
     private String email;
+    private String password;
     @JsonProperty("mobileNumber")
     private String phone;
     @NotNull
@@ -104,5 +105,13 @@ public class EmployeeDTO {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

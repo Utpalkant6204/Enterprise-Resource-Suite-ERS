@@ -18,9 +18,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @PostMapping("/v1/create_employee")
+    @PostMapping("/v1/register_employee")
     public ResponseEntity<?> createEmplyee(@Valid @RequestBody EmployeeDTO employeeDTO) throws Exception {
-        EmployeeDTO employeeDTO1 = adminService.saveEmployee(employeeDTO);
+        EmployeeDTO employeeDTO1 = adminService.createEmployee(employeeDTO);
         return new ResponseEntity<>(employeeDTO1, HttpStatus.CREATED);
     }
 }

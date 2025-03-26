@@ -33,6 +33,8 @@ public class Employee {
 
     private String department;
 
+    private String password;
+
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
@@ -40,7 +42,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, String department, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Employee(Long employeeId, String firstName, String lastName, String email, Role role, String phone, boolean isActive, String department, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,6 +53,7 @@ public class Employee {
         this.department = department;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.password = password;
     }
 
     public Long getEmployeeId() {
@@ -133,6 +136,14 @@ public class Employee {
         this.department = department;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -143,4 +154,5 @@ public class Employee {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }

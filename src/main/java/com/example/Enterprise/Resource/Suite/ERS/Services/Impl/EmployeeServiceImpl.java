@@ -2,6 +2,7 @@ package com.example.Enterprise.Resource.Suite.ERS.Services.Impl;
 
 import com.example.Enterprise.Resource.Suite.ERS.DTOS.CriteriaDTO;
 import com.example.Enterprise.Resource.Suite.ERS.DTOS.EmployeeDTO;
+import com.example.Enterprise.Resource.Suite.ERS.DTOS.PaginationDTO;
 import com.example.Enterprise.Resource.Suite.ERS.DTOS.SearchDTO;
 import com.example.Enterprise.Resource.Suite.ERS.Entity.Employee;
 import com.example.Enterprise.Resource.Suite.ERS.Mapper.EmployeeMapper;
@@ -36,10 +37,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         try {
             log.info("Searching employees with criteria: ");
+
+            if (criteriaDTO.getPagination() == null) {
+                criteriaDTO.setPagination(new PaginationDTO());
+            }
+
+//            if(criteriaDTO.getPagination().getPageSize() == Integer.parseInt(null))
+//            {
+//                criteriaDTO.getPagination().setPageSize(10);
+//            }
+//            if(criteriaDTO.getPagination().getPageNumber() == Integer.parseInt(null))
+//            {
+//                criteriaDTO.getPagination().setPageSize(0);
+//            }
+
             List<Employee> employees = employeeRepository.searchEmployee(
                     criteriaDTO.getId(),
                     criteriaDTO.getSearchText(),
-                    criteriaDTO.getRole(),
+//                    criteriaDTO.getRole(),
                     criteriaDTO.getPagination().getPageSize(),
                     criteriaDTO.getPagination().getPageNumber()
             );

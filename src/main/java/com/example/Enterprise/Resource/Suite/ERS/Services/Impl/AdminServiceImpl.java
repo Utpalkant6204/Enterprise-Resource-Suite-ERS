@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,21 +23,33 @@ public class AdminServiceImpl implements AdminService {
 
     private final EmployeeMapper employeeMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public AdminServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
+    public AdminServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
     @Override
     @Transactional
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
         log.info("Attempting to save employee: {}", employeeDTO);
 
         try {
+            if(employeeDTO.getPassword() == null)
+            {
+                log.error("Password is needed while create new employee user");
+                throw new CustomException("Password is needed while create new employee user");
+            }
+
             Employee employee = employeeMapper.toEntity(employeeDTO);
             log.debug("Employee entity mapped: {}", employee);
+
+            // encode the password
+            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
             // Save to DB
             Employee savedEmployee = employeeRepository.save(employee);
