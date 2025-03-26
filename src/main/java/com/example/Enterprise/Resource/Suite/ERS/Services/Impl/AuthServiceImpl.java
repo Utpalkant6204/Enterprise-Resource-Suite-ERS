@@ -2,9 +2,12 @@ package com.example.Enterprise.Resource.Suite.ERS.Services.Impl;
 
 import com.example.Enterprise.Resource.Suite.ERS.DTOS.LoginDTO;
 import com.example.Enterprise.Resource.Suite.ERS.Entity.Employee;
+import com.example.Enterprise.Resource.Suite.ERS.Exceptions.CustomException;
 import com.example.Enterprise.Resource.Suite.ERS.Repositories.EmployeeRepository;
 import com.example.Enterprise.Resource.Suite.ERS.Services.Interface.AuthService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -27,14 +31,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String validateUser(LoginDTO loginDTO) {
-
-        authenticationManager.authenticate(
+        var Auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
         );
-        Employee employee = employeeRepository.findByEmail(loginDTO.getEmail());
-        List<String> roles = List.of(employee.getRole().name());
 
-        return jwtService.generateToken(employee.getEmail(), roles);
+        if(Auth.isAuthenticated()) {
+            Employee employee = employeeRepository.findByEmail(loginDTO.getEmail());
+            List<String> roles = List.of(employee.getRole().name());
 
+            return jwtService.generateToken(employee.getEmail(), roles);
+        }
+        else{
+            log.error("Wrong UserName or Password : {}", loginDTO.getEmail());
+            throw new CustomException("Wrong UserName or Password");
+        }
     }
 }

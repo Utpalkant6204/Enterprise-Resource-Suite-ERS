@@ -1,12 +1,13 @@
 package com.example.Enterprise.Resource.Suite.ERS.DTOS;
 
+import com.example.Enterprise.Resource.Suite.ERS.Entity.Employee;
 import com.example.Enterprise.Resource.Suite.ERS.Enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public class EmployeeDTO {
+public class EmployeeCreateDTO {
     @JsonProperty("id")
     private Long employeeId;
     @NotNull
@@ -14,6 +15,9 @@ public class EmployeeDTO {
     private String lastName;
     @NotNull
     private String email;
+
+    @NotNull
+    private String password;
     @JsonProperty("mobileNumber")
     private String phone;
     @NotNull
@@ -105,4 +109,13 @@ public class EmployeeDTO {
     public void setDepartment(String department) {
         this.department = department;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

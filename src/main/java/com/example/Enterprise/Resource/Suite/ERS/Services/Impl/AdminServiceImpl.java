@@ -1,8 +1,10 @@
 package com.example.Enterprise.Resource.Suite.ERS.Services.Impl;
 
+import com.example.Enterprise.Resource.Suite.ERS.DTOS.EmployeeCreateDTO;
 import com.example.Enterprise.Resource.Suite.ERS.DTOS.EmployeeDTO;
 import com.example.Enterprise.Resource.Suite.ERS.Entity.Employee;
 import com.example.Enterprise.Resource.Suite.ERS.Exceptions.CustomException;
+import com.example.Enterprise.Resource.Suite.ERS.Mapper.EmployeeCreateMapper;
 import com.example.Enterprise.Resource.Suite.ERS.Mapper.EmployeeMapper;
 import com.example.Enterprise.Resource.Suite.ERS.Repositories.EmployeeRepository;
 import com.example.Enterprise.Resource.Suite.ERS.Services.Interface.AdminService;
@@ -23,19 +25,22 @@ public class AdminServiceImpl implements AdminService {
 
     private final EmployeeMapper employeeMapper;
 
+    private final EmployeeCreateMapper employeeCreateDTO;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, PasswordEncoder passwordEncoder) {
+    public AdminServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, EmployeeCreateMapper employeeCreateDTO, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
+        this.employeeCreateDTO = employeeCreateDTO;
         this.passwordEncoder = passwordEncoder;
     }
 
 
     @Override
     @Transactional
-    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeDTO createEmployee(EmployeeCreateDTO employeeDTO) {
         log.info("Attempting to save employee: {}", employeeDTO);
 
         try {
@@ -45,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
                 throw new CustomException("Password is needed while create new employee user");
             }
 
-            Employee employee = employeeMapper.toEntity(employeeDTO);
+            Employee employee = employeeCreateDTO.toEntity(employeeDTO);
             log.debug("Employee entity mapped: {}", employee);
 
             // encode the password

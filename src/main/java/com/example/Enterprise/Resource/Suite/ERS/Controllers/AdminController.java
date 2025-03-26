@@ -1,5 +1,6 @@
 package com.example.Enterprise.Resource.Suite.ERS.Controllers;
 
+import com.example.Enterprise.Resource.Suite.ERS.DTOS.EmployeeCreateDTO;
 import com.example.Enterprise.Resource.Suite.ERS.DTOS.EmployeeDTO;
 import com.example.Enterprise.Resource.Suite.ERS.Services.Interface.AdminService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/v1/register_employee")
-    public ResponseEntity<?> createEmplyee(@Valid @RequestBody EmployeeDTO employeeDTO) throws Exception {
+    public ResponseEntity<?> createEmplyee(@Valid @RequestBody EmployeeCreateDTO employeeDTO) throws Exception {
         EmployeeDTO employeeDTO1 = adminService.createEmployee(employeeDTO);
         return new ResponseEntity<>(employeeDTO1, HttpStatus.CREATED);
     }

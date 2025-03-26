@@ -26,9 +26,12 @@ public class SecurityConfig {
 
     private final jwtAuthFilter jwtAuthFilter;
 
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+
     @Autowired
-    public SecurityConfig(com.example.Enterprise.Resource.Suite.ERS.Config.jwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(com.example.Enterprise.Resource.Suite.ERS.Config.jwtAuthFilter jwtAuthFilter, CustomAuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
@@ -42,6 +45,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("/login").permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(excep -> excep.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
