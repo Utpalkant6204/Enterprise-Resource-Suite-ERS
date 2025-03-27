@@ -13,18 +13,19 @@ import java.util.UUID;
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     @Query(value = """
-        SELECT * FROM employee e
-        WHERE (:employeeId IS NULL OR e.employee_id = CAST(:employeeId AS UUID))
-        AND (:searchText IS NULL OR LOWER(CONCAT(e.first_name, ' ', e.last_name)) ILIKE LOWER(CONCAT('%', :searchText, '%')))
+        SELECT e.* FROM employee e
+        WHERE (CAST(:employeeId AS UUID) IS NULL OR e.employee_id = CAST(:employeeId AS UUID))
+        AND (COALESCE(:searchText, '') = '' OR 
+             LOWER(CONCAT(COALESCE(e.first_name, ''), ' ', COALESCE(e.last_name, ''))) 
+             ILIKE LOWER(CONCAT('%', :searchText, '%')))
         LIMIT :limit OFFSET :offset
-    """, nativeQuery = true)
+        """, nativeQuery = true)
     List<Employee> searchEmployee(
             @Param("employeeId") UUID employeeId,
             @Param("searchText") String searchText,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
-
 
     Employee findByEmail(String username);
 }
