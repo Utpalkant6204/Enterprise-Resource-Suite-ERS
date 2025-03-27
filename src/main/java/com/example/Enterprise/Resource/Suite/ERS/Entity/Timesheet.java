@@ -1,16 +1,20 @@
 package com.example.Enterprise.Resource.Suite.ERS.Entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "timesheet")
 public class Timesheet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long timesheetId;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID timesheetId;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
@@ -31,7 +35,7 @@ public class Timesheet {
     public Timesheet() {
     }
 
-    public Timesheet(Long timesheetId, Employee employee, Task task, Double hoursWorked, LocalDate workDate, LocalDateTime createdAt) {
+    public Timesheet(UUID timesheetId, Employee employee, Task task, Double hoursWorked, LocalDate workDate, LocalDateTime createdAt) {
         this.timesheetId = timesheetId;
         this.employee = employee;
         this.task = task;
@@ -40,11 +44,11 @@ public class Timesheet {
         this.createdAt = createdAt;
     }
 
-    public Long getTimesheetId() {
+    public UUID getTimesheetId() {
         return timesheetId;
     }
 
-    public void setTimesheetId(Long timesheetId) {
+    public void setTimesheetId(UUID timesheetId) {
         this.timesheetId = timesheetId;
     }
 

@@ -3,17 +3,21 @@ package com.example.Enterprise.Resource.Suite.ERS.Entity;
 import com.example.Enterprise.Resource.Suite.ERS.Enums.ProjectStatus;
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "project")
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectId;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID projectId;
 
     @Column(nullable = false)
     private String name;
@@ -39,7 +43,7 @@ public class Project {
     public Project() {
     }
 
-    public Project(Long projectId, String name, String description, LocalDate startDate, LocalDate endDate, ProjectStatus status, Employee manager, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Project(UUID projectId, String name, String description, LocalDate startDate, LocalDate endDate, ProjectStatus status, Employee manager, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.projectId = projectId;
         this.name = name;
         this.description = description;
@@ -51,11 +55,11 @@ public class Project {
         this.updatedAt = updatedAt;
     }
 
-    public Long getProjectId() {
+    public UUID getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(UUID projectId) {
         this.projectId = projectId;
     }
 

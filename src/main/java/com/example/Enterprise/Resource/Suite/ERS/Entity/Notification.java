@@ -1,16 +1,20 @@
 package com.example.Enterprise.Resource.Suite.ERS.Entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "notification")
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long notificationId;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID notificationId;
 
     @Column(nullable = false)
     private String message;
@@ -26,7 +30,7 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(Long notificationId, String message, Employee employee, boolean isRead, LocalDateTime createdAt) {
+    public Notification(UUID notificationId, String message, Employee employee, boolean isRead, LocalDateTime createdAt) {
         this.notificationId = notificationId;
         this.message = message;
         this.employee = employee;
@@ -34,11 +38,11 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
-    public Long getNotificationId() {
+    public UUID getNotificationId() {
         return notificationId;
     }
 
-    public void setNotificationId(Long notificationId) {
+    public void setNotificationId(UUID notificationId) {
         this.notificationId = notificationId;
     }
 

@@ -1,8 +1,10 @@
 package com.example.Enterprise.Resource.Suite.ERS.DTOS;
 
+import java.util.UUID;
+
 public class TaskDTO {
 
-    private Long Id;
+    private UUID Id;
 
     private String title;
 
@@ -10,11 +12,11 @@ public class TaskDTO {
 
     private String status;
 
-    public Long getId() {
+    public UUID getId() {
         return Id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         Id = id;
     }
 

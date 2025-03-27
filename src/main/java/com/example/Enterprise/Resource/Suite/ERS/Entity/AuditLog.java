@@ -1,16 +1,20 @@
 package com.example.Enterprise.Resource.Suite.ERS.Entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "audit_log")
 public class AuditLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long logId;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID logId;
 
     @Column(nullable = false)
     private String action;
@@ -24,18 +28,18 @@ public class AuditLog {
     public AuditLog() {
     }
 
-    public AuditLog(Long logId, String action, Employee performedBy, LocalDateTime performedAt) {
+    public AuditLog(UUID logId, String action, Employee performedBy, LocalDateTime performedAt) {
         this.logId = logId;
         this.action = action;
         this.performedBy = performedBy;
         this.performedAt = performedAt;
     }
 
-    public Long getLogId() {
+    public UUID getLogId() {
         return logId;
     }
 
-    public void setLogId(Long logId) {
+    public void setLogId(UUID logId) {
         this.logId = logId;
     }
 

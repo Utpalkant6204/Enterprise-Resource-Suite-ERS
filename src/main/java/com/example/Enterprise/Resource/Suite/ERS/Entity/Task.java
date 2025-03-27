@@ -3,17 +3,21 @@ package com.example.Enterprise.Resource.Suite.ERS.Entity;
 import com.example.Enterprise.Resource.Suite.ERS.Enums.TaskPriority;
 import com.example.Enterprise.Resource.Suite.ERS.Enums.TaskStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "task")
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long taskId;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID taskId;
 
     @Column(nullable = false)
     private String title;
@@ -43,7 +47,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long taskId, String title, String description, TaskStatus status, TaskPriority priority, LocalDate dueDate, Project project, Employee assignedTo, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Task(UUID taskId, String title, String description, TaskStatus status, TaskPriority priority, LocalDate dueDate, Project project, Employee assignedTo, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.taskId = taskId;
         this.title = title;
         this.description = description;
@@ -56,11 +60,11 @@ public class Task {
         this.updatedAt = updatedAt;
     }
 
-    public Long getTaskId() {
+    public UUID getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(Long taskId) {
+    public void setTaskId(UUID taskId) {
         this.taskId = taskId;
     }
 
